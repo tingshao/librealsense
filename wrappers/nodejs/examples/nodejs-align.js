@@ -107,16 +107,20 @@ while (!win.shouldWindowClose()) {
   pipStream.y = alteredColorFrameRect.y + alteredColorFrameRect.h -
       pipStream.h - (Math.max(w, h) / 25);
 
-  renderer.upload(colorizer.colorize(alignedDepthFrame));
+  let colorizedDepth = colorizer.colorize(alignedDepthFrame);
+  renderer.upload(colorizedDepth);
   renderer.show(pipStream);
 
   if (alignedDepthFrame) alignedDepthFrame.destroy();
 
   if (colorFrame) colorFrame.destroy();
 
+  colorizedDepth.destroy();
+
   frameset.destroy();
   win.endPaint();
 }
+pipe.stop();
 pipe.destroy();
 align.destroy();
 win.destroy();

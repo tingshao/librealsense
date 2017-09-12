@@ -364,6 +364,30 @@ describe('Sensor tests', function() {
       }
     }
   });
+  it('getOptionDescription', () => {
+    sensors.forEach((s) => {
+      for (let i = rs2.option.OPTION_BACKLIGHT_COMPENSATION; i < rs2.option.OPTION_COUNT; i++) {
+        let des = s.getOptionDescription(i);
+        assert.equal((des === undefined) || (typeof des === 'string'), true);
+      }
+    })
+  });
+  it('getOption', () => {
+    sensors.forEach((s) => {
+      for (let i = rs2.option.OPTION_BACKLIGHT_COMPENSATION; i < rs2.option.OPTION_COUNT; i++) {
+        let value = s.getOption(i);
+        assert.equal((value === undefined) || (typeof value === 'number'), true);
+      }
+    })
+  });
+  it('getOptionValueDescription', () => {
+    sensors.forEach((s) => {
+      for (let i = rs2.option.OPTION_BACKLIGHT_COMPENSATION; i < rs2.option.OPTION_COUNT; i++) {
+        let des = s.getOptionValueDescription(i, 1);
+        assert.equal((des === undefined) || (typeof des === 'string'), true);
+      }
+    })
+  });
 });
 
 describe('Align tests', function() {

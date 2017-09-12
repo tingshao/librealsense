@@ -1183,7 +1183,7 @@ class RSSensor : public Nan::ObjectWrap {
     Nan::SetPrototypeMethod(tpl, "getOptionRange", GetOptionRange);
     Nan::SetPrototypeMethod(tpl, "isOptionReadonly", IsOptionReadonly);
     Nan::SetPrototypeMethod(tpl, "getOptionDescription", GetOptionDescription);
-    Nan::SetPrototypeMethod(tpl, "GetOptionValueDescription",
+    Nan::SetPrototypeMethod(tpl, "getOptionValueDescription",
         GetOptionValueDescription);
     // Nan::SetPrototypeMethod(tpl, "createSyncer", CreateSyncer);
     Nan::SetPrototypeMethod(tpl, "getMotionIntrinsics", GetMotionIntrinsics);
@@ -1292,8 +1292,10 @@ class RSSensor : public Nan::ObjectWrap {
     if (me) {
       auto desc = rs2_get_option_value_description(me->sensor,
           static_cast<rs2_option>(option), val, &me->error);
-      info.GetReturnValue().Set(Nan::New(desc).ToLocalChecked());
-      return;
+      if (desc) {
+        info.GetReturnValue().Set(Nan::New(desc).ToLocalChecked());
+        return;
+      }
     }
     info.GetReturnValue().Set(Nan::Undefined());
   }

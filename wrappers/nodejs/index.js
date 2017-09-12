@@ -460,7 +460,7 @@ class Sensor {
   /**
   * Check if particular option is read-only
   * @param {String|Number} option The option to be checked
-  * @return {Boolean} true if option is read-only
+  * @return {Boolean|undefined} true if option is read-only and undefined if not supported
   */
   isOptionReadOnly(option) {
     let o = checkStringNumber(arguments[0],
@@ -468,6 +468,8 @@ class Sensor {
         option2Int,
         'Sensor.isOptionReadOnly(option) expects a number or string as the 1st argument',
         'Sensor.isOptionReadOnly(option) expects a valid value as the 1st argument');
+    if (!this.cxxSensor.supportsOption(o)) return undefined;
+
     return this.cxxSensor.isOptionReadonly(o);
   }
 
@@ -540,6 +542,8 @@ class Sensor {
         option2Int,
         'Sensor.getOption(option) expects a number or string as the 1st argument',
         'Sensor.getOption(option) expects a valid value as the 1st argument');
+    if (!this.cxxSensor.supportsOption(o)) return undefined;
+
     return this.cxxSensor.getOption(o);
   }
 
@@ -572,6 +576,8 @@ class Sensor {
         option2Int,
         'Sensor.getOptionRange(option) expects a number or string as the 1st argument',
         'Sensor.getOptionRange(option) expects a valid value as the 1st argument');
+    if (!this.cxxSensor.supportsOption(o)) return undefined;
+
     return this.cxxSensor.getOptionRange(o);
   }
 
@@ -589,6 +595,8 @@ class Sensor {
         option2Int,
         'Sensor.getOptionRange(option) expects a number or string as the 1st argument',
         'Sensor.getOptionRange(option) expects a valid value as the 1st argument');
+    if (!this.cxxSensor.supportsOption(o)) return undefined;
+
     this.cxxSensor.setOption(o, value);
   }
 
@@ -622,6 +630,8 @@ class Sensor {
         option2Int,
         'Sensor.supportsOption(option) expects a number or string as the 1st argument',
         'Sensor.supportsOption(option) expects a valid value as the 1st argument');
+    if (!this.cxxSensor.supportsOption(o)) return undefined;
+
     return this.cxxSensor.getOptionDescription(o);
   }
 
@@ -639,6 +649,8 @@ class Sensor {
         option2Int,
         'Sensor.supportsOption(option) expects a number or string as the 1st argument',
         'Sensor.supportsOption(option) expects a valid value as the 1st argument');
+    if (!this.cxxSensor.supportsOption(o)) return undefined;
+
     return this.cxxSensor.getOptionValueDescription(o, value);
   }
 
@@ -3180,13 +3192,13 @@ const recording_mode = {
  * Enum for option values.
  * @readonly
  * @enum {String}
- * @see [Device.isOptionReadOnly()]{@link Device#isOptionReadOnly}
- * @see [Device.getOption()]{@link Device#getOption}
- * @see [Device.getOptionRange()]{@link Device#getOptionRange}
- * @see [Device.setOption()]{@link Device#setOption}
- * @see [Device.supportsOption()]{@link Device#supportsOption}
- * @see [Device.getOptionDescription()]{@link Device#getOptionDescription}
- * @see [Device.getOptionValueDescription()]{@link Device#getOptionValueDescription}
+ * @see [Sensor.isOptionReadOnly()]{@link Sensor#isOptionReadOnly}
+ * @see [Sensor.getOption()]{@link Sensor#getOption}
+ * @see [Sensor.getOptionRange()]{@link Sensor#getOptionRange}
+ * @see [Sensor.setOption()]{@link Sensor#setOption}
+ * @see [Sensor.supportsOption()]{@link Sensor#supportsOption}
+ * @see [Sensor.getOptionDescription()]{@link Sensor#getOptionDescription}
+ * @see [Sensor.getOptionValueDescription()]{@link Sensor#getOptionValueDescription}
  */
 
 const option = {
