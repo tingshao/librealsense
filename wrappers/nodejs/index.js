@@ -1161,7 +1161,6 @@ class Align {
   process(frameset) {
     const newFrameset = this.cxxAlign.process(frameset.cxxFrameSet);
     if (newFrameset) {
-      frameset.dismiss();
       return new FrameSet(newFrameset);
     }
   }
@@ -1273,9 +1272,13 @@ class Frame {
    * Destroy the frame and its resource
    */
   destroy() {
-    this.cxxFrame.destroy();
+    if (this.cxxFrame) {
+      this.cxxFrame.destroy();
+    }
     this.cxxFrame = undefined;
-    this.streamProfile.destroy();
+    if (this.streamProfile) {
+      this.streamProfile.destroy();
+    }
     this.StreamProfile = undefined;
   }
 
@@ -1677,11 +1680,6 @@ class FrameSet {
     this.cxxFrameSet.destroy();
     this.cxxFrameSet = undefined;
   }
-
-  dismiss() {
-    this.cxxFrameSet.dismiss();
-    this.cxxFrameSet = undefined;
-  }
 }
 
 /**
@@ -1731,7 +1729,6 @@ class Pipeline {
     this.ctx = undefined;
   }
 
-  
   /**
    * Start streaming
    * There are 2 acceptable syntax
@@ -1788,7 +1785,7 @@ class Pipeline {
   getActiveProfile() {
     if (this.started === false) return undefined;
 
-    return new PipelineProfile(this.cxxPipeline.getActiveProfile())
+    return new PipelineProfile(this.cxxPipeline.getActiveProfile());
   }
 }
 
@@ -1801,7 +1798,7 @@ class PipelineProfile {
   }
 
   getStreams() {
-    profiles = this.cxxPipelineProfile.getStreams();
+    let profiles = this.cxxPipelineProfile.getStreams();
     const array = [];
     profiles.forEach((profile) => {
       array.push(new StreamProfile(profile));
@@ -1820,7 +1817,7 @@ class Config {
     this.cxxConfig.create();
   }
 
-  enableStream(stream, index, width, height, format, fps){
+  enableStream(stream, index, width, height, format, fps) {
     let s = checkStringNumber(stream,
         constants.stream.STREAM_ANY, constants.stream.STREAM_COUNT,
         stream2Int,
@@ -1836,7 +1833,7 @@ class Config {
     this.cxxConfig.enableStream(s, index, width, height, f, fps);
   }
 
-  disableStream(stream){
+  disableStream(stream) {
     let s = checkStringNumber(stream,
     constants.stream.STREAM_ANY, constants.stream.STREAM_COUNT,
     stream2Int,
@@ -1846,7 +1843,7 @@ class Config {
     this.cxxConfig.disableStream(s);
   }
 
-  enableAllStreams(){
+  enableAllStreams() {
     this.cxxConfig.enableAllStreams();
   }
 
@@ -1854,11 +1851,11 @@ class Config {
     this.cxxConfig.disableAllStreams();
   }
 
-  enableDevice(serial){
+  enableDevice(serial) {
     this.cxxConfig.enableDevice(serial);
   }
 
-  enableDeviceFromFile(filename){
+  enableDeviceFromFile(filename) {
     this.cxxConfig.enableDeviceFromFile(filename);
   }
 
@@ -1869,21 +1866,19 @@ class Config {
   resolve(pipeline) {
     if (arguments.length === 0) {
         throw new TypeError('Invalid argument for Config.resolve()');
-    } 
-    else {
+    } else {
       if (!(arguments[0] instanceof Pipeline)) {
         throw new TypeError('Invalid argument for Config.resolve()');
       }
       return new PipelineProfile(this.cxxConfig.resolve(arguments[0].cxxPipeline));
     }
-
     return undefined;
   }
+
   canResolve(pipeline) {
     if (arguments.length === 0) {
         throw new TypeError('Invalid argument for Config.canResolve()');
-    } 
-    else {
+    } else {
       if (!(arguments[0] instanceof Pipeline)) {
         throw new TypeError('Invalid argument for Config.canResolve()');
       }
