@@ -1,0 +1,21 @@
+# iOS CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/ios-migrating-from-1-2/ for more details
+#
+
+version: 2
+jobs:
+  build:
+
+    # Specify the Xcode version to use
+    macos:
+      xcode: "8.3.3"
+
+    steps:
+      - checkout
+      - run: brew update
+      - run: brew install xctool --HEAD
+      - run: brew install cmake
+      - run: brew install pkgconfig
+      - run: brew install homebrew/versions/glfw3
+      - run: mkdir build && cd build && cmake .. -DBUILD_EXAMPLES=true -DBUILD_WITH_OPENMP=false -DHWM_OVER_XU=false && make -j 8
